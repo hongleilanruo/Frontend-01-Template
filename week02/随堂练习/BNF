@@ -1,0 +1,29 @@
+"a"
+
+"b"
+
+<Program>:= "a"+ | "b"+
+<Program>:= <Program> "a"+ | <Program> "b"+
+
+
+
+<Number> = "0" | "1" | "2" | ... | "9"
+
+<DecimalNumber> = "0" | (( "1" | "2" | ... | "9" )+ <Number>* )
+<DecimalNumber> = /0｜[1-9][0-9]*/
+
+<PrimaryExpression> = <DecimalNumber> | 
+    "(" <LogicalExpression> ")"
+
+<MultipleExpression> = <DecimalNumber> | 
+    <MultipleExpression> "*" <DecimalNumber> |
+    <MultipleExpression> "/" <DecimalNumber>
+
+<AdditiveExpression> = <MultipleExpression> | 
+    <AdditiveExpression> "+" <MultipleExpression> |
+    <AdditiveExpression> "-" <MultipleExpression>
+
+<LogicalExpression> = <DecimalNumber> | 
+    <LogicalExpression> "||" <AdditiveExpression> |
+    <LogicalExpression> "&&" <AdditiveExpression>
+

@@ -1,0 +1,22 @@
+<script>
+    var a = 0.1;
+    var b = 0.2;
+
+    const intarr = new Uint8Array(8);
+
+    const memory = new Float64Array(intarr.buffer);
+    intarr[0] = 0b0000000;
+    intarr[1] = 0b0001000;
+
+    // const memory = new Float64Array(1);
+    // memory[0] = a;
+
+    // const intarr = new Uint8Array(memory.buffer);
+
+    // for(let i = 0; i < 8; i++){
+    //     var s = (intarr[i].toString(2));
+    //     console.log(new Array(9 - s.length).join("0") + s);
+    // }
+
+    console.log(intarr);
+</script>
