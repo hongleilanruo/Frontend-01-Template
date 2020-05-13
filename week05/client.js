@@ -91,9 +91,12 @@ class ResponseParser {
         return this.bodyParser && this.bodyParser.isFinished;
     }
     get response() {
-        this.statusLine.match()
+        this.statusLine.match(/HTTP\/1.1 ([0-9]+) ([\s\S]+)/);
         return {
-            status
+            statusCode: RegExp.$1,
+            statusText: RegExp.$2,
+            headers: this.headers,
+            body: this.bodyParser.content.join('')
         }
 
     }
