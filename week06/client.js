@@ -1,4 +1,5 @@
 const net = require("net");
+const parser = require("./parser.js");
 
 class Request {
     //method, url = host + port + path
@@ -91,7 +92,7 @@ class ResponseParser {
             statusCode: RegExp.$1,
             statusText: RegExp.$2,
             headers: this.headers,
-            body: this.bodyParser.content.join('')
+            body: this.bodyParser.content.join("")
         }
     }
     receive(string) {
@@ -103,8 +104,6 @@ class ResponseParser {
         if (this.current === this.WAITING_STATUS_LINE) {
             if (char === "\r") {
                 this.current = this.WAITING_STATUS_LINE_END;
-            } else if (char === "\n") {
-                this.current = this.WAITING_HEADER_NAME;
             } else {
                 this.statusLine += char;
             }
@@ -211,5 +210,7 @@ void async function () {
     });
 
     let response = await request.send();
-    console.log(response)
+    let dom = parser.parseHTML(response.body);
+
+    console.log(dom);
 }();
