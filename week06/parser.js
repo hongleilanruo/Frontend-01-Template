@@ -4,7 +4,7 @@ let currentAttribute = null;
 let stack = [{
     type: "document",
     children: []
-}]
+}];
 let currentTextNode = null;
 
 function emit(token) {
@@ -29,7 +29,6 @@ function emit(token) {
         }
 
         top.children.push(element);
-        element.parent = top;
 
         if (!token.isSelfClosing) {
             stack.push(element);
@@ -66,7 +65,7 @@ function data(c) {
     } else if (c === EOF) {
         emit({
             type: "EOF"
-        })
+        });
         return;
     } else {
         emit({
@@ -115,7 +114,7 @@ function tagName(c) {
 function beforeAttributeName(c) {
     if (c.match(/^[\t\n\f ]$/)) {
         return beforeAttributeName;
-    } else if (c == ">" || c == "/" || c == EOF) {
+    } else if (c == "/" || c == ">" || c == EOF) {
         return afterAttributeName(c);
     } else if (c == "=") {
 
@@ -132,7 +131,7 @@ function attributeName(c) {
     if (c.match(/^[\t\n\f ]$/) || c == "/" || c == ">" || c == EOF) {
         return afterAttributeName(c);
     } else if (c == "=") {
-        return beforeAttributeName;
+        return beforeAttributeValue;
     } else if (c == "\u0000") {
 
     } else if (c == "\"" || c == "'" || c == "<") {
