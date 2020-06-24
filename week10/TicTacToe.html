@@ -1,133 +1,198 @@
-<style>
-    #board {
-        width: 306px;
-    }
+<html>
 
-    .cell {
-        width: 100px;
-        height: 100px;
-        background-color: green;
-        display: inline-block;
-        border: solid 1px white;
-        vertical-align: middle;
+<head>
+    <meta charset="UTF-8">
+    <title>TicTacToe</title>
+    <style>
+        #board {
+            width: 306px;
+        }
 
-        line-height: 100px;
-        font-size: 50px;
-        text-align: center;
-        cursor: pointer;
-    }
-</style>
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            display: inline-block;
+            border: solid 1px white;
+            vertical-align: middle;
 
-<div id="board"></div>
+            line-height: 100px;
+            font-size: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
 
-<script>
-    let pattern = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]
-    ]
+<body>
+    <div id="board"></div>
 
-    let color = 1;
+    <script>
+        let pattern = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ]
 
-    function show() {
-        let board = document.getElementById('board');
-        board.innerHTML = '';
+        let color = 1;
 
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                let cell = document.createElement('div');
-                cell.classList.add('cell');
+        function show() {
+            let board = document.getElementById('board');
+            board.innerHTML = '';
 
-                cell.innerHTML =
-                    pattern[i][j] == 2 ? '❌' :
-                    pattern[i][j] == 1 ? '⭕️' :
-                    '';
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    let cell = document.createElement('div');
+                    cell.classList.add('cell');
 
-                cell.addEventListener('click', () => move(j, i));
-                board.appendChild(cell);
+                    cell.innerHTML =
+                        pattern[i][j] == 2 ? '❌' :
+                        pattern[i][j] == 1 ? '⭕️' :
+                        '';
+
+                    cell.addEventListener('click', () => useMove(j, i));
+                    board.appendChild(cell);
+                }
             }
         }
-    }
 
-    function move(x, y) {
-        if (pattern[y][x] !== 0) return
-        pattern[y][x] = color;
-        if (check(pattern, color)) {
-            alert(color == 2 ? "❌ is winner" : "⭕️ is winner");
+        function useMove(x, y) {
+            if (pattern[y][x] !== 0) return
+            pattern[y][x] = color;
+            if (check(pattern, color)) {
+                alert(color == 2 ? "❌ is winner" : "⭕️ is winner");
+            }
+            color = 3 - color;
+            show();
+            computerMove();
         }
-        color = 3 - color;
+
+        function computerMove() {
+            let choice = bastChioce(pattern, color);
+            if (choice.point) {
+                pattern[choice.point[1]][choice.point[0]] = color;
+            }
+            if (check(pattern, color)) {
+                alert(color == 2 ? "❌ is winner" : "⭕️ is winner");
+            }
+            color = 3 - color;
+            show();
+        }
+
+        function check(pattern, color) {
+            for (let i = 0; i < 3; i++) {
+                let win = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j] !== color) {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win) return true;
+            }
+
+            for (let i = 0; i < 3; i++) {
+                let win = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[j][i] !== color) {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win) return true;
+            }
+
+            {
+                let win = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[j][j] !== color) {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win) return true;
+            }
+
+            {
+                let win = true;
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[j][2 - j] !== color) {
+                        win = false;
+                        break;
+                    }
+                }
+                if (win) return true;
+            }
+
+            return null
+        }
+
+        function clone(pattern) {
+            return JSON.parse(JSON.stringify(pattern))
+        }
+
+        function willWin(pattern) {
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j] !== 0) continue;
+                    let tmp = clone(pattern);
+                    tmp[i][j] = color;
+                    if (check(tmp, color)) {
+                        return true
+                    }
+                }
+            }
+            return null
+        }
+
+        let openings = new Map();
+        openings.set([
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ].toString() + '1', {
+            point: [1, 1],
+            result: 0
+        })
+
+        function bastChioce(pattern, color) {
+            if (openings.has(pattern.toString() + color)) {
+                return openings.get(pattern.toString() + color);
+            }
+            let point = willWin(pattern, color);
+
+            if (point) {
+                return {
+                    point: point,
+                    result: 1
+                }
+            }
+
+            let result = -1;
+            outer: for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (pattern[i][j] !== 0) continue;
+                    let tmp = clone(pattern);
+                    tmp[i][j] = color;
+                    let oppo = bastChioce(tmp, 3 - color);
+                    if (-oppo.result >= result) {
+                        point = [j, i];
+                        result = -oppo.result;
+                    }
+                    if (result == 1) {
+                        break outer;
+                    }
+                }
+            }
+
+            return {
+                point: point,
+                result: point ? result : 0
+            }
+        }
+
         show();
+    </script>
+</body>
 
-        if (willWin(pattern, color)) {
-            console.log(color == 2 ? "❌ is winner" : "⭕️ is winner");
-        }
-    }
-
-    function check(pattern, color) {
-        for (let i = 0; i < 3; i++) {
-            let win = true;
-            for (let j = 0; j < 3; j++) {
-                if (pattern[i][j] !== color) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) return true;
-        }
-
-        for (let i = 0; i < 3; i++) {
-            let win = true;
-            for (let j = 0; j < 3; j++) {
-                if (pattern[j][i] !== color) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) return true;
-        }
-
-        {
-            let win = true;
-            for (let j = 0; j < 3; j++) {
-                if (pattern[j][j] !== color) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) return true;
-        }
-
-        {
-            let win = true;
-            for (let j = 0; j < 3; j++) {
-                if (pattern[j][2 - j] !== color) {
-                    win = false;
-                    break;
-                }
-            }
-            if (win) return true;
-        }
-
-        return false
-    }
-
-    function clone(pattern) {
-        return JSON.parse(JSON.stringify(pattern))
-    }
-
-    function willWin(pattern) {
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 3; j++) {
-                if (pattern[i][j] !== 0) continue;
-                let tmp = clone(pattern);
-                tmp[i][j] = color;
-                if (check(tmp, color)) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-    show(pattern);
-</script>
+</html>
