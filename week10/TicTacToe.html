@@ -131,7 +131,7 @@
             return JSON.parse(JSON.stringify(pattern))
         }
 
-        function willWin(pattern) {
+        function willWin(pattern, color) {
             for (let i = 0; i < 3; i++) {
                 for (let j = 0; j < 3; j++) {
                     if (pattern[i][j] !== 0) continue;
