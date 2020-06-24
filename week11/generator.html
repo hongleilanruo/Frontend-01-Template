@@ -1,0 +1,71 @@
+<style>
+    div {
+        background-color: grey;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin: 30px;
+        border-radius: 50px;
+    }
+
+    .green.light {
+        background-color: green;
+    }
+
+    .yellow.light {
+        background-color: yellow;
+    }
+
+    .red.light {
+        background-color: red;
+    }
+</style>
+
+<div class="green"></div>
+<div class="yellow"></div>
+<div class="red"></div>
+
+<button id="next">next</button>
+
+<script>
+    function green() {
+        var light = document.getElementsByTagName('div');
+        for (var i = 0; i < 3; i++) {
+            light[i].classList.remove('light');
+        }
+        document.getElementsByClassName('green')[0].classList.add('light');
+    }
+
+    function yellow() {
+        var light = document.getElementsByTagName('div');
+        for (var i = 0; i < 3; i++) {
+            light[i].classList.remove('light');
+        }
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+    }
+
+    function red() {
+        var light = document.getElementsByTagName('div');
+        for (var i = 0; i < 3; i++) {
+            light[i].classList.remove('light');
+        }
+        document.getElementsByClassName('red')[0].classList.add('light');
+    }
+
+    function sleep(t) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, t);
+        })
+    }
+
+    function* go() {
+        while (true) {
+            green();
+            yield sleep(1000);
+            yellow();
+            yield sleep(200);
+            red();
+            yield sleep(500);
+        }
+    }
+</script>

@@ -1,0 +1,92 @@
+<style>
+    div {
+        background-color: grey;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin: 30px;
+        border-radius: 50px;
+    }
+
+    .green.light {
+        background-color: green;
+    }
+
+    .yellow.light {
+        background-color: yellow;
+    }
+
+    .red.light {
+        background-color: red;
+    }
+</style>
+
+<div class="green"></div>
+<div class="yellow"></div>
+<div class="red"></div>
+
+<script>
+    function green() {
+        var light = document.getElementsByTagName('div');
+        for (var i = 0; i < 3; i++) {
+            light[i].classList.remove('light');
+        }
+        document.getElementsByClassName('green')[0].classList.add('light');
+    }
+
+    function yellow() {
+        var light = document.getElementsByTagName('div');
+        for (var i = 0; i < 3; i++) {
+            light[i].classList.remove('light');
+        }
+        document.getElementsByClassName('yellow')[0].classList.add('light');
+    }
+
+    function red() {
+        var light = document.getElementsByTagName('div');
+        for (var i = 0; i < 3; i++) {
+            light[i].classList.remove('light');
+        }
+        document.getElementsByClassName('red')[0].classList.add('light');
+    }
+
+    // promise的写法
+    function sleep(t) {
+        return new Promise((resolve, reject) => {
+            setTimeout(resolve, t);
+        })
+    }
+
+    // 链式表达代替setTimeout嵌套
+    function go() {
+        green();
+        sleep(1000).then(() => {
+            yellow();
+            return sleep(200);
+        }).then(() => {
+            red();
+            return sleep(500);
+        }).then(go)
+    }
+
+    // setTimeout的写法
+    // function go() {
+    //     green();
+
+    //     // 加时间达到嵌套的效果
+    //     setTimeout(yellow, 10000);
+    //     setTimeout(red, 12000);
+    //     setTimeout(go, 17000);
+
+    //     // 嵌套的写法
+    //     // setTimeout(function () {
+    //     //     yellow();
+    //     //     setTimeout(function () {
+    //     //         red();
+    //     //         setTimeout(function () {
+    //     //             go();
+    //     //         }, 5000)
+    //     //     }, 2000)
+    //     // }, 10000)
+    // }
+</script>
