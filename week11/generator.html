@@ -68,4 +68,27 @@
             yield sleep(500);
         }
     }
+
+    function run(iterator) {
+        let {
+            value,
+            done
+        } = iterator.next();
+        if (done) {
+            return;
+        }
+        if (value instanceof Promise) {
+            value.then(() => {
+                run(iterator)
+            })
+        }
+    }
+
+    function co(generator) {
+        return function () {
+            return run(generator());
+        }
+    }
+
+    go = co(go);
 </script>
