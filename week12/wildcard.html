@@ -1,0 +1,43 @@
+<script>
+    function find(source, pattren) {
+        let starCount = 0;
+        for (let i = 0; i < pattren.length; i++) {
+            if (pattren[i] === '*') {
+                starCount++;
+            }
+        }
+        if (starCount === 0) {
+            for (let i = 0; i < pattren.length; i++) {
+                if (pattren[i] !== source[i] && pattren[i] !== '?') return false;
+            }
+            return;
+        }
+
+        let i = 0;
+        let lastIndex = 0;
+
+        for (i = 0; pattren[i] !== '*'; i++) {
+            if (pattren[i] !== source[i] && pattren[i] !== '?') return false;
+        }
+
+        lastIndex = i;
+
+        for (let p = 0; i < starCount - 1; p++) {
+            i++;
+            let subPattren = '';
+            while (pattren[i] !== '*') {
+                subPattren += pattren[i];
+                i++;
+            }
+            let reg = new RegExp(subPattren.replace(/\?/g, '[\\s\\S]'), 'g');
+            reg.lastIndex = lastIndex;
+            console.log(reg.exec(source));
+            lastIndex = reg.lastIndex;
+        }
+
+        for (let j = 0; j <= source.length - lastIndex && pattren[pattren.length - j] !== '*'; j++) {
+            if (pattren[pattren.length - j] !== source[source.length - j] && pattren[i] !== '?') return false;
+        }
+        return true;
+    }
+</script>
