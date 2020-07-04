@@ -7,7 +7,7 @@
     }
 
     function reactive(obj) {
-        return new Proxy(object, {
+        return new Proxy(obj, {
             get(obj, prop) {
                 console.log(obj, prop);
                 return obj[prop];
