@@ -3,9 +3,11 @@ module.exports = {
     module: {
         rules: [{
             test: /\.js$/,
-            use: 'babel-loader',
-            options: {
-                presets: ['@bable/presets-env']
+            use: {
+                loader: 'babel-loader',
+                options: {
+                    presets: ['@bable/preset-env']
+                }
             }
         }]
     }
