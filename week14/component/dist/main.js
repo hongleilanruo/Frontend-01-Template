@@ -86,26 +86,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./foo.js":
-/*!****************!*\
-  !*** ./foo.js ***!
-  \****************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("console.log('foo');\n\n//# sourceURL=webpack:///./foo.js?");
-
-/***/ }),
-
 /***/ "./main.js":
 /*!*****************!*\
   !*** ./main.js ***!
   \*****************/
-/*! no exports provided */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _foo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./foo */ \"./foo.js\");\n/* harmony import */ var _foo__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_foo__WEBPACK_IMPORTED_MODULE_0__);\n\nvar componet; //= <Cls id = \"a\" />\n//componet.setAttribute('id', 'a');\n\n//# sourceURL=webpack:///./main.js?");
+eval("function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction create() {\n  var o = new Cls();\n\n  for (var name in attributes) {\n    o[name] = attributes[name];\n  }\n\n  return o;\n}\n\nvar Div = function Div() {\n  _classCallCheck(this, Div);\n};\n\nvar component = createElement(Cls, {\n  id: \"a\"\n});\nconsole.log(component); //component.setAttribute('id', 'a');\n\n//# sourceURL=webpack:///./main.js?");
 
 /***/ })
 

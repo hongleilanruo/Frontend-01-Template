@@ -1,4 +1,15 @@
-import './foo'
-let componet; //= <Cls id = "a" />
+function create(Cls, attributes) {
+    let o = new Cls;
+    for (let name in attributes) {
+        o[name] = attributes[name];
+    }
+    return o;
+}
 
-//componet.setAttribute('id', 'a');
+class Div {
+
+}
+
+let component = <Div id = "a" class = "b" />
+    console.log(component)
+//component.setAttribute('id', 'a');
