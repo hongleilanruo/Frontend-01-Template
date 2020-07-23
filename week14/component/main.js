@@ -1,7 +1,7 @@
 function createElement(Cls, attributes, ...children) {
     let o;
     if(typeof Cls === 'string') {
-        o = new Wraper(Cls);
+        o = new Wrapper(Cls);
     }else {
         o = new Cls({
             timer:{}
@@ -35,7 +35,7 @@ class Text {
     }
 }
 
-class Wraper {
+class Wrapper {
     constructor(type) {
         this.children = [];
         this.root = document.createElement(type);
@@ -80,7 +80,7 @@ class MyComponent {
     }
 
     mountTo(parent) {
-        let slot = <div></div>
+        this.slot = <div></div>
         for(let child of this.children) {
             this.slot.appendChild(child);
         }
