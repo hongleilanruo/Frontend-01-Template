@@ -6,9 +6,21 @@ module.exports = {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ['@bable/preset-env']
+                    presets: ['@babel/preset-env'],
+                    plugins: [
+                        [
+                            "@babel/plugin-transform-react-jsx",
+                            {
+                                pragma: "createElement"
+                            }
+                        ]
+                    ]
                 }
             }
         }]
+    },
+    mode: "development",
+    optimization: {
+        minimize: false
     }
 };

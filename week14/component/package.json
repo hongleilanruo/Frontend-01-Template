@@ -10,11 +10,12 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.10.4",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
     "babel-loader": "^8.1.0",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "@babel/preset-env": "^7.10.4"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.10.4"
   }
 }
