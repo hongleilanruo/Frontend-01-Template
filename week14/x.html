@@ -37,6 +37,7 @@
                 for (let d of this.data) {
                     let element = document.createElement('img');
                     element.src = d;
+                    element.addEventListener('dragstart', event => event.preventDefault());
                     this.root.appendChild(element);
                 }
 
@@ -60,11 +61,32 @@
                         next.style.transform = `translateX(${-100 * nextPosition}%)`;
 
                         position = nextPosition;
-                    }, 16)
+                    }, 16);
 
                     setTimeout(nextPic, 3000);
                 }
-                setTimeout(nextPic, 3000);
+                // setTimeout(nextPic, 3000);
+
+                this.root.addEventListener('mousedown', (event) => {
+                    let startX = event.clientX,
+                        startY = event.clientY;
+
+                    let move = (event) => {
+                        let current = this.root.childNodes[position];
+                        current.style.transition = 'ease 0s';
+                        current.style.transform =
+                            `translateX(${event.clientX - startX - 500 * position}px)`
+                        // console.log(event.clientX - startX, event.clientY - startY);
+                    };
+
+                    let up = (event) => {
+                        document.removeEventListener('mousemove', move);
+                        document.removeEventListener('mouseup', up);
+                    };
+
+                    document.addEventListener('mousemove', move);
+                    document.addEventListener('mouseup', up);
+                });
             }
         }
 
