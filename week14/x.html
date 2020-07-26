@@ -70,13 +70,28 @@
                 this.root.addEventListener('mousedown', (event) => {
                     let startX = event.clientX,
                         startY = event.clientY;
+                    let nextPosition = (position + 1) % this.data.length;
+                    let lastPosition = (position - 1 + this.data.length) % this.data.length;
+
+                    let current = this.root.childNodes[position];
+                    let last = this.root.childNodes[lastPosition];
+                    let next = this.root.childNodes[nextPosition];
+
+                    current.style.transition = 'ease 0s';
+                    last.style.transition = 'ease 0s';
+                    next.style.transition = 'ease 0s';
+
+                    current.style.transform = `translateX(${- 100 * position}px)`;
+                    last.style.transform = `translateX(${-100 - 100 * lastPosition}px)`;
+                    next.style.transform = `translateX(${100 - 100 * nextPosition}px)`;
 
                     let move = (event) => {
-                        let current = this.root.childNodes[position];
-                        current.style.transition = 'ease 0s';
                         current.style.transform =
-                            `translateX(${event.clientX - startX - 500 * position}px)`
-                        // console.log(event.clientX - startX, event.clientY - startY);
+                            `translateX(${event.clientX - startX - 500 * position}px)`;
+                        last.style.transform =
+                            `translateX(${event.clientX - startX - 500 - 500 * lastPosition}px)`;
+                        next.style.transform =
+                            `translateX(${event.clientX - startX + 500 - 500 * nextPosition}px)`
                     };
 
                     let up = (event) => {
