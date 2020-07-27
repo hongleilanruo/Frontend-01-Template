@@ -95,6 +95,27 @@
                     };
 
                     let up = (event) => {
+                        let offset = 0;
+
+                        if (event.clientX - startX > 250) {
+                            offset = 1;
+                        } else if (event.clientX - startX < -250) {
+                            offset = -1;
+                        }
+
+                        current.style.transition = 'ease 0.5s';
+                        last.style.transition = 'ease 0.5s';
+                        next.style.transition = 'ease 0.5s';
+
+                        current.style.transform =
+                            `translateX(${offset * 500 - 500 * position}px)`;
+                        last.style.transform =
+                            `translateX(${offset * 500 - 500 - 500 * lastPosition}px)`;
+                        next.style.transform =
+                            `translateX(${offset * 500 + 500 - 500 * nextPosition}px)`;
+
+                        position = (position - offset + this.data.length) % this.data.length;
+
                         document.removeEventListener('mousemove', move);
                         document.removeEventListener('mouseup', up);
                     };
