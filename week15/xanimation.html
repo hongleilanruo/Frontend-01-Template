@@ -7,25 +7,32 @@
     }
 
     #el2 {
-        transition: ease 5s;
+        /* transition: ease 5s; */
     }
 </style>
 <div id="el"></div>
 <div id="el2"></div>
 <button id="pauseBtn">pause</button>
+<button id="resumeBtn">resume</button>
+<button id="el2StartBtn">el2 start</button>
 <script type="module">
-    import {Timeline, Animation} from './animation'
+    import {Timeline, Animation, ColorAnimation} from './animation'
     import {cubicBzier} from './cubicBezier.js'
 
     let linear = t => t
     let ease = cubicBzier(.25, .1, .25, 1)
 
     let el = document.getElementById('el')
+    let el2 = document.getElementById('el2')
     let tl = new Timeline()
 
-    tl.add(new Animation(el.style, 'transform', v => `translateX${v}px`, 0, 200, 5000, 0, t => t))
+    tl.add(new Animation(el.style, 'transform', 0, 200, 5000, 0, linear, v => `translateX${v}px`))
     tl.start()
 
     // document.getElementById('el2').style.transform = 'translateX(200px)'
     document.getElementById('pauseBtn').addEventListener('click', () => { tl.pause() })
+    document.getElementById('resumeBtn').addEventListener('click', () => { tl.resume() })
+    document.getElementById('el2StartBtn').addEventListener('click', () => { 
+        tl.add(new ColorAnimation(el.style, 'backgroundColor', {r:0, g:0,b:0,a:1}, {r:255, g:0, b:0, a:1}, 5000, 0, linear))
+    })
 </script>
